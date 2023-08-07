@@ -1,4 +1,5 @@
 # mini_project
+
 from tkinter import*
 import tkinter as tk
 from geopy.geocoders import Nominatim
@@ -12,6 +13,7 @@ root=Tk()
 root.title("Weather App")
 root.geometry("900x500+300+200")
 root.resizable(False,False)
+
 
 def getWeather():
     try:
@@ -48,9 +50,28 @@ def getWeather():
         h.config(text=humidity)
         d.config(text=description)
         p.config(text=pressure)
-    
+        
+        kolkata_timezone = pytz.timezone('Asia/Kolkata')
+        kolkata_time = datetime.now(kolkata_timezone)
+        formatted_time = kolkata_time.strftime("%I:%M %p")
+
+        clock.config(text=formatted_time)
+        name.config(text="CURRENT WEATHER")
+
+        root.after(1000, getWeather)
+
+
     except Exception as e:
         messagebox.showerror("Weather App","Invalid Entry!!")
+
+def updateWeather():
+    getWeather()
+    # Update weather every 5 minutes (300,000 milliseconds)
+    root.after(300000, updateWeather)
+
+# Call the function to start updating weather information
+    updateWeather() 
+
 
 #icon
 image_icon=PhotoImage(file="Images/logo.png")
@@ -122,8 +143,6 @@ d=Label(text="...",font=("arial",20,"bold"),bg="#1ab5ef")
 d.place(x=450,y=430)
 p=Label(text="...",font=("arial",20,"bold"),bg="#1ab5ef")
 p.place(x=670,y=430)
-
-
 
 
 
